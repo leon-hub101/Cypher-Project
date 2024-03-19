@@ -7,11 +7,11 @@ Usage
 
 1. Clone this repository to your local machine or download the files directly.
 
-2. Open the `index.html` file in a web browser.
+2. Open the `cypher.html` file in a web browser.
 
 3. You will be prompted with a message asking you to enter your secret message. Type your message into the prompt box and press Enter.
 
-4. After pressing Enter, your message will be encrypted and decrypted again using the Caesar cipher algorithm, and the results will be displayed in the browser's console.
+4. After pressing Enter, your message will be encrypted and decrypted again using the Caesar cypher algorithm, and the results will be displayed in the browser's console.
 
 How it Works
 
