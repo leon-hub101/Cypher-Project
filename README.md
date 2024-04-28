@@ -1,4 +1,4 @@
-# ASCII Encoder/Decoder Cypher-Project
+# ASCII Encoder/Decoder Cipher-Project
 A simple encoder and decoder
 
 This is a simple JavaScript program that encodes and decodes messages using a Caesar cipher algorithm. It takes a word as input, converts each letter to its ASCII equivalent, adds 15 to the ASCII value (shifting it 15 letters forward in the alphabet), and then converts it back to the corresponding letters.
