@@ -10,8 +10,8 @@ function cypher(str) {
     let newCode = "";
     
     for (let i = 0; i < str.length; i++) {
-        let char = str[i];// A placeholder for non-alphabetic characters
-        let asciiCode = str.charCodeAt(i);// For the ascii values of the letters
+        let char = str[i]; // A placeholder for non-alphabetic characters
+        let asciiCode = str.charCodeAt(i); // For the ascii values of the letters
         
         // Check if the character is a letter (upper or lower case)
         if ((asciiCode >= 65 && asciiCode <= 90) || (asciiCode >= 97 && asciiCode <= 122)) {
@@ -41,25 +41,25 @@ function cypher(str) {
         
     }
     return newCode;
-    
-} 
+}
+
 const encrypted = cypher(UserMessage);
 console.log(`Your message encrypted: ${encrypted}`);
 
 function deCypher(str) {
-    let origStr= "";
+    let origStr = "";
 
     for (let i = 0; i < str.length; i++) {
         let char = str[i];
         let asciiCode = str.charCodeAt(i);
 
         if ((asciiCode >= 65 && asciiCode <= 90) || (asciiCode >= 97 && asciiCode <= 122)) {
-            let isUpperCase = asciiCode >= 65 && asciiCode <= 90; 
+            let isUpperCase = asciiCode >= 65 && asciiCode <= 90;
             
             // Reverse the encoding algorithm from the cypher function
-            let upperBound = isUpperCase ? 90 : 122;
-            let shiftedAsciiVal = ((asciiCode - upperBound - 15) % 26) + upperBound;
-            origStr += String.fromCharCode(shiftedAsciiVal);
+            let base = isUpperCase ? 65 : 97;
+            let shiftedAsciiVals = ((asciiCode - base - 15 + 26) % 26) + base;
+            origStr += String.fromCharCode(shiftedAsciiVals);
 
         } else {
             origStr += char;
@@ -67,7 +67,7 @@ function deCypher(str) {
         
     }
     return origStr;
-} 
+}
 
-const decrypted = deCypher(encrypted)
+const decrypted = deCypher(encrypted);
 console.log(`Your message decrypted: ${decrypted}`);
