@@ -6,102 +6,43 @@ import java.util.Formatter;
 public class Poetry {
 
     public static void main(String[] args) {
-        File poemFile = new File(
-                "C:\\Users\\User\\Dropbox\\LP24020013758\\2 - Advanced Programming Concepts\\L2T04 - Java - IO\\17-004 Java - IO\\poem.txt");
+        String poemPath = "C:\\Users\\User\\Dropbox\\LP24020013758\\2 - Advanced Programming Concepts\\L2T04 - Java - IO\\17-004 Java - IO\\poem.txt";
+        String encodedPoemPath = "C:\\Users\\User\\Dropbox\\LP24020013758\\2 - Advanced Programming Concepts\\L2T04 - Java - IO\\Task 1\\encodedPoem.txt";
+        String vowelsPoemPath = "C:\\Users\\User\\Dropbox\\LP24020013758\\2 - Advanced Programming Concepts\\L2T04 - Java - IO\\Task 2\\capitalVowels.txt";
+        String reversedPoemPath = "C:\\Users\\User\\Dropbox\\LP24020013758\\2 - Advanced Programming Concepts\\L2T04 - Java - IO\\Task 3\\reversePoem.txt";
+        String restoredPoemPath = "C:\\Users\\User\\Dropbox\\LP24020013758\\2 - Advanced Programming Concepts\\L2T04 - Java - IO\\Task 3\\restoredPoem.txt";
 
-        File encodedPoemFile = new File(
-                "C:\\Users\\User\\Dropbox\\LP24020013758\\2 - Advanced Programming Concepts\\L2T04 - Java - IO\\Task 1\\encodedPoem.txt");
-
-        File vowelsPoemFile = new File(
-                "C:\\Users\\User\\Dropbox\\LP24020013758\\2 - Advanced Programming Concepts\\L2T04 - Java - IO\\Task 2\\capitalVowels.txt");
-
-        File reversedPoemFile = new File(
-                "C:\\Users\\User\\Dropbox\\LP24020013758\\2 - Advanced Programming Concepts\\L2T04 - Java - IO\\Task 3\\reversePoem.txt");
-
-        File restoredPoemFile = new File(
-                "C:\\Users\\User\\Dropbox\\LP24020013758\\2 - Advanced Programming Concepts\\L2T04 - Java - IO\\Task 3\\restoredPoem.txt");
-
-        try (Scanner file = new Scanner(poemFile);
-                Formatter f = new Formatter(encodedPoemFile)) {
-
-            StringBuilder poem = new StringBuilder();
-
-            while (file.hasNextLine()) {
-                poem.append(file.nextLine() + "\n");
-            }
-
-            String encryptedPoem = cipher(poem.toString().trim()); // Calling the Cipher function to encrypt the input
-            f.format("%s", encryptedPoem); // Writing the encrypted input to the new file (encodedPoem.txt)
-            System.out.println("Encrypted poem written to the new file.");
-
-        } catch (FileNotFoundException e) {
-            System.out.println("There's an issue with your files. Please check your file paths.");
-            e.printStackTrace();
-        }
-
-        try (Scanner file = new Scanner(encodedPoemFile);
-                Formatter f = new Formatter(vowelsPoemFile)) {
-
-            StringBuilder vowels = new StringBuilder();
-
-            while (file.hasNextLine()) {
-                vowels.append(file.nextLine() + "\n");
-            }
-
-            String capitalVowels = capVowel(vowels.toString().trim()); // Calling the capVowel function to capitalise
-                                                                       // the vowels
-            f.format("%s", capitalVowels); // Writting the modified encrypted poem to the new file (capitalVowels.txt)
-            System.out.println("The vowels have been capitalised.");
-
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found. Please check your file path.");
-            e.printStackTrace();
-        }
-
-        try (Scanner file = new Scanner(vowelsPoemFile);
-                Formatter f = new Formatter(reversedPoemFile)) {
-
-            StringBuilder reversedPoem = new StringBuilder();
-
-            while (file.hasNextLine()) {
-                reversedPoem.append(file.nextLine() + "\n");
-            }
-
-            String restoredCaps = restoreText(reversedPoem.toString().trim()); // Calling the function to restore the
-                                                                               // vowels and capped letters
-            String reversed = reverseString1(restoredCaps); // Calling the reverseString function to reverse the encoded
-                                                            // poem
-            String decodedPoem = deCipher(reversed); // Calling the deCipher function to decode the poem
-            f.format("%s", decodedPoem); // Writting the decoded and reversed poem to the new file (reversePoem.txt)
-            System.out.println("The encrypted poem has been decrypted, reversed and the caps restored.");
-
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found. Please check your file path.");
-            e.printStackTrace();
-        }
-
-        try (Scanner file = new Scanner(reversedPoemFile);
-                Formatter f = new Formatter(restoredPoemFile)) {
-
-            StringBuilder restoredPoem = new StringBuilder();
-
-            while (file.hasNextLine()) {
-                restoredPoem.append(file.nextLine() + "\n");
-            }
-
-            String reversed = reverseString2(restoredPoem.toString().trim()); // Calling the reverseString function to
-                                                                              // reverse the encoded poem
-            f.format("%s", reversed); // Writting the restored poem to the new file (restoredPoem.txt)
-            System.out.println("The poem has been restored to its original state.");
-
-        } catch (FileNotFoundException e) {
-            System.out.println("File not found. Please check your file path.");
-            e.printStackTrace();
-        }
-
+        processFile(poemPath, encodedPoemPath, Poetry::cipher, "Encrypted poem written to the new file.");
+        processFile(encodedPoemPath, vowelsPoemPath, Poetry::capVowel, "The vowels have been capitalised.");
+        processFile(vowelsPoemPath, reversedPoemPath, text -> Poetry.reverseString1(Poetry.restoreText(text)), "The encrypted poem has been decrypted, reversed and the caps restored.");
+        processFile(reversedPoemPath, restoredPoemPath, Poetry::reverseString2, "The poem has been restored to its original state.");
     }
 
-    // My cipher function iterates over the input and converts every character to
+    private static void processFile(String inputPath, String outputPath, Processor processor, String successMessage) {
+        try (Scanner scanner = new Scanner(new File(inputPath));
+             Formatter formatter = new Formatter(outputPath)) {
+
+            StringBuilder content = new StringBuilder();
+            while (scanner.hasNextLine()) {
+                content.append(scanner.nextLine()).append("\n");
+            }
+
+            String processedContent = processor.process(content.toString().trim());
+            formatter.format("%s", processedContent);
+            System.out.println(successMessage);
+
+        } catch (FileNotFoundException e) {
+            System.out.println("File not found. Please check your file path.");
+            e.printStackTrace();
+        }
+    }
+
+    @FunctionalInterface
+    interface Processor {
+        String process(String text);
+    }
+
+     // My cipher function iterates over the input and converts every character to
     // it's Ascii equivalent.
     // It then shifts the Asciivals on by 15 characters, and then reverts the vals
     // to their equivalent in the alphabet. 
