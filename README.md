@@ -59,4 +59,5 @@ Note
 - Non-alphabetic characters (e.g., numbers, symbols) remain unchanged during encryption and decryption.
 - For extended functionality or use in production environments, further testing and validation may be required.
 
+Please follow this link for quick access to the encoder: https://leon-hub101.github.io/Cypher-Project/
 Enjoy encrypting and decrypting your messages! 🛡️🔑
