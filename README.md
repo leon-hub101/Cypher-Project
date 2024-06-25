@@ -39,6 +39,8 @@ The program consists of two main functions: `cypher()` and `deCypher()`. Here's 
 - Non-alphabetic characters remain unchanged.
 - The decrypted message is returned.
 
+Please follow this link for quick access to the encoder: https://leon-hub101.github.io/Cypher-Project/
+
 Example
 
 // Example usage
@@ -52,7 +54,6 @@ console.log(`Your message encrypted: ${encrypted}`);
 const decrypted = deCypher(encrypted)
 console.log(`Your message decrypted: ${decrypted}`);
 ```
-Please follow this link for quick access to the encoder: https://leon-hub101.github.io/Cypher-Project/
 
 Note
 
